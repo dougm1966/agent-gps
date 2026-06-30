@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent GPS"
+  short_description: "Map, review, and improve AI-agent working environments."
+  default_prompt: "Use $agent-gps to build an Agent GPS map for this repository, then explain the agent, skill, instruction, MCP/tool evidence, Graphify relationships, and recommended working-environment upgrades."
