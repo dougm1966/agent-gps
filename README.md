@@ -21,7 +21,8 @@ Agent GPS turns that working environment into a graph, a review, and an upgrade 
 ## What It Detects
 
 - Agent surfaces: `.claude/agents/**/*.md`, `.codex/agents/*`, `.devin/agents/*`, and similar agent wrappers.
-- Skill surfaces: `.agents/skills/*/SKILL.md` and `.claude/skills/*/SKILL.md`.
+- Skill surfaces: root `SKILL.md`, `.agents/skills/*/SKILL.md`, and `.claude/skills/*/SKILL.md`.
+- Skill metadata: `agents/openai.yaml` for Codex skill-list metadata.
 - Instruction docs: `AGENTS.md`, `CLAUDE.md`, Copilot instructions, Cursor rules, and Windsurf rules.
 - MCP evidence: repo-local MCP server config plus MCP tool references in agent permissions and tool lists.
 - Package scripts: `package.json` scripts as supporting automation context.

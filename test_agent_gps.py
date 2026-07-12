@@ -48,6 +48,37 @@ class AgentGpsV2Tests(unittest.TestCase):
         )
         return temp
 
+    def test_root_skill_repo_is_detected_as_public_skill_surface(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        (root / "agents").mkdir()
+        (root / "SKILL.md").write_text(
+            "---\nname: agent-gps\ndescription: Build Agent GPS maps for repositories.\n---\n\n# Agent GPS\n\nMap agentic working environments.\n",
+            encoding="utf-8",
+        )
+        (root / "agents" / "openai.yaml").write_text(
+            'interface:\n  display_name: "Agent GPS"\n  short_description: "Map agent working environments."\n',
+            encoding="utf-8",
+        )
+
+        graph = agent_gps.build_graph(root)
+
+        root_skill = next(source for source in graph["sources"] if source["path"] == "SKILL.md")
+        metadata = next(source for source in graph["sources"] if source["path"] == "agents/openai.yaml")
+        root_skill_node = next(node for node in graph["nodes"] if node.get("path") == "SKILL.md")
+
+        self.assertEqual(root_skill["kind"], "canonical_skill")
+        self.assertEqual(root_skill["surface"], "Root skill")
+        self.assertEqual(root_skill["confidence"], "high")
+        self.assertEqual(metadata["kind"], "skill_metadata")
+        self.assertEqual(graph["summary"]["sources"], 2)
+        self.assertEqual(graph["summary"]["canonical_skills"], 1)
+        self.assertEqual(graph["summary"]["skill_surfaces"], 1)
+        self.assertEqual(root_skill_node["what"], "Canonical skill")
+        self.assertIn("Root skill", root_skill_node["inclusion_reason"])
+        self.assertTrue(any("reusable skill surface" in item for item in graph["review"]["strengths"]))
+
     def test_source_nodes_include_developer_facing_details(self):
         with self.make_repo() as temp:
             graph = agent_gps.build_graph(Path(temp))

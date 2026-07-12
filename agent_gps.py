@@ -45,6 +45,7 @@ KIND_LABELS = {
     "claude_agent": "Claude agent",
     "claude_skill": "Claude skill mirror",
     "canonical_skill": "Canonical skill",
+    "skill_metadata": "Skill metadata",
     "codex_agent": "Codex agent",
     "devin_agent": "Devin agent",
     "instruction_doc": "Instruction doc",
@@ -82,8 +83,10 @@ SURFACE_RULES = [
     SurfaceRule("claude_agent", HIGH_CONFIDENCE, ".claude/agents/*/AGENT.md", "Claude agents"),
     SurfaceRule("claude_agent", HIGH_CONFIDENCE, ".claude/agents/*.md", "Claude agents"),
     SurfaceRule("claude_agent", HIGH_CONFIDENCE, ".claude/agents/**/*.md", "Claude agents"),
+    SurfaceRule("canonical_skill", HIGH_CONFIDENCE, "SKILL.md", "Root skill"),
     SurfaceRule("claude_skill", HIGH_CONFIDENCE, ".claude/skills/*/SKILL.md", "Claude skill mirrors"),
     SurfaceRule("canonical_skill", HIGH_CONFIDENCE, ".agents/skills/*/SKILL.md", "Canonical skills"),
+    SurfaceRule("skill_metadata", MEDIUM_CONFIDENCE, "agents/openai.yaml", "Skill metadata"),
     SurfaceRule("codex_agent", HIGH_CONFIDENCE, ".codex/agents/*.toml", "Codex agent wrappers"),
     SurfaceRule("codex_agent", HIGH_CONFIDENCE, ".codex/agents/*/AGENT.md", "Codex agents"),
     SurfaceRule("devin_agent", HIGH_CONFIDENCE, ".devin/agents/*/AGENT.md", "Devin agent wrappers"),
@@ -196,7 +199,7 @@ def source_inclusion_reason(source: dict) -> str:
 def slug_from_path(path: Path, kind: str) -> str:
     if kind in {"claude_agent", "devin_agent", "claude_skill", "canonical_skill", "codex_agent"}:
         if path.name in {"AGENT.md", "SKILL.md"}:
-            return path.parent.name
+            return path.parent.name or path.stem
         return path.stem
     return path.stem or path.name
 

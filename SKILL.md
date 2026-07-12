@@ -5,7 +5,7 @@ description: Build Agent GPS maps and reports for repositories. Use when a user 
 
 # Agent GPS
 
-Use this skill to create a standalone Agent GPS report for a repository. Agent GPS maps agentic operating context: agents, skills, instruction files, MCP/tool evidence, package scripts, related docs, and optional Graphify code/doc nodes.
+Use this skill to create a standalone Agent GPS report for a repository. Agent GPS maps agentic operating context: agents, root or nested skills, skill metadata, instruction files, MCP/tool evidence, package scripts, related docs, and optional Graphify code/doc nodes.
 
 ## Workflow
 
